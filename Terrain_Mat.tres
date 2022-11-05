@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dx3emm3deefrf"]
+
+[ext_resource type="Shader" path="res://texture_shader.gdshader" id="1_jvfny"]
+[ext_resource type="Texture2D" uid="uid://d3bfkhx8ojjvu" path="res://textures/grass.jpg" id="2_66s76"]
+[ext_resource type="Texture2D" uid="uid://l5fglvy747x8" path="res://textures/rocks.jpeg" id="3_8o1dv"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_jvfny")
+shader_parameter/max_rock_height = 5.0
+shader_parameter/min_grass_height = 0.561
+shader_parameter/terrain_grass = ExtResource("2_66s76")
+shader_parameter/terrain_rock = ExtResource("3_8o1dv")
+shader_parameter/uvscale = Vector2(5, 5)

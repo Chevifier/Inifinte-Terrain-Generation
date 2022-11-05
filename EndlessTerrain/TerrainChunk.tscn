@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://xxbd64a50fk1"]
+
+[ext_resource type="Material" uid="uid://dx3emm3deefrf" path="res://Terrain_Mat.tres" id="1_pg4ei"]
+[ext_resource type="Script" path="res://EndlessTerrain/TerrainChunk.gd" id="1_reb1s"]
+
+[node name="TerrainChunk" type="MeshInstance3D"]
+material_override = ExtResource("1_pg4ei")
+script = ExtResource("1_reb1s")
+Terrain_Size = 200.0
+resolution = 5.0

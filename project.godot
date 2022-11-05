@@ -1,0 +1,30 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "MeshInstance3D",
+"class": &"TerrainChunk",
+"language": &"GDScript",
+"path": "res://EndlessTerrain/TerrainChunk.gd"
+}]
+_global_script_class_icons={
+"TerrainChunk": ""
+}
+
+[application]
+
+config/name="Terrain Generation in Godot"
+run/main_scene="res://EndlessTerrain/EndlessTerrain.tscn"
+config/features=PackedStringArray("4.0", "Forward Plus")
+config/icon="res://icon.svg"
+
+[physics]
+
+3d/run_on_separate_thread=true

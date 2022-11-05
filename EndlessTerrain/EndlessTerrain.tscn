@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://b4kpp8136uhf8"]
+
+[ext_resource type="Script" path="res://EndlessTerrain/EndlessTerrain.gd" id="1_r563f"]
+[ext_resource type="PackedScene" uid="uid://xxbd64a50fk1" path="res://EndlessTerrain/TerrainChunk.tscn" id="2_q4j3x"]
+[ext_resource type="PackedScene" uid="uid://cdkdhhuucmfx7" path="res://EndlessTerrain/viewer.tscn" id="4_r4tn5"]
+[ext_resource type="Script" path="res://EndlessTerrain/debug.gd" id="4_vvtep"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fvdy5"]
+noise_type = 3
+frequency = 0.001
+domain_warp_type = 2
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0uhvg"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rcf2k"]
+sky_material = SubResource("ProceduralSkyMaterial_0uhvg")
+
+[sub_resource type="Environment" id="Environment_rmk44"]
+background_mode = 2
+sky = SubResource("Sky_rcf2k")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="EndlessTerrain" type="Node3D" node_paths=PackedStringArray("viewer")]
+script = ExtResource("1_r563f")
+terrain_height = 148
+viewer = NodePath("Viewer")
+chunk_mesh_scene = ExtResource("2_q4j3x")
+noise = SubResource("FastNoiseLite_fvdy5")
+thread_count = 20
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.731508, 0.433092, -0.526618, 0, 0.772357, 0.635189, 0.681832, -0.464646, 0.564985, 0, 1.43371, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rmk44")
+
+[node name="Viewer" parent="." instance=ExtResource("4_r4tn5")]
+
+[node name="debug" type="Label" parent="."]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 366.0
+offset_bottom = 462.0
+text = "FPS: 0
+Draw Calls:0
+Frame Time:0
+Objects:0"
+script = ExtResource("4_vvtep")
