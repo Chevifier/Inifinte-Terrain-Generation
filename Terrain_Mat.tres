@@ -11,4 +11,4 @@ shader_parameter/max_rock_height = 5.0
 shader_parameter/min_grass_height = 0.561
 shader_parameter/terrain_grass = ExtResource("2_66s76")
 shader_parameter/terrain_rock = ExtResource("3_8o1dv")
-shader_parameter/uvscale = Vector2(5, 5)
+shader_parameter/uvscale = Vector2(20, 20)

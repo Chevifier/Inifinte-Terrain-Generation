@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://ufd7hd7mdlw8"]
+
+[ext_resource type="Script" path="res://EndlessTerrainThreaded/EndlessTerrainThreaded.gd" id="1_a5omx"]
+[ext_resource type="PackedScene" uid="uid://b2x34ysakaigh" path="res://EndlessTerrainThreaded/TerrainChunkMT.tscn" id="2_rwqoh"]
+[ext_resource type="Sky" uid="uid://dgwxj6r8ymssf" path="res://Sky.tres" id="4_fgrfl"]
+[ext_resource type="Script" path="res://EndlessTerrain/debug.gd" id="4_vvtep"]
+[ext_resource type="PackedScene" uid="uid://sg6unraa28jg" path="res://EndlessTerrain/Player.tscn" id="5_4ox3w"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w4m3e"]
+noise_type = 3
+
+[sub_resource type="Environment" id="Environment_rmk44"]
+background_mode = 2
+sky = ExtResource("4_fgrfl")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="World" type="Node3D"]
+
+[node name="InfiniteTerrainThreaded" type="Node3D" parent="." node_paths=PackedStringArray("viewer")]
+script = ExtResource("1_a5omx")
+viewer = NodePath("../Player")
+chunk_mesh_scene = ExtResource("2_rwqoh")
+thread_count = 15
+noise = SubResource("FastNoiseLite_w4m3e")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rmk44")
+
+[node name="debug" type="Label" parent="."]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 366.0
+offset_bottom = 462.0
+text = "FPS: 0
+Draw Calls:0
+Frame Time:0
+Objects:0"
+script = ExtResource("4_vvtep")
+
+[node name="Player" parent="." instance=ExtResource("5_4ox3w")]
+wall_min_slide_angle = 0.10472
+speed = 400

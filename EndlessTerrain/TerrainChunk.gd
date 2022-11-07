@@ -3,25 +3,30 @@ extends MeshInstance3D
 #Terrain size
 @export_range(20,400, 1)var Terrain_Size := 200
 #LOD scaling
-@export_range(2, 100, 1) var resolution := 20
+@export_range(1, 100, 1) var resolution := 20
 @export var Terrain_Max_Height = 5
 #set the minimum to maximum lods 
 #to change the terrain resolution
-var chunk_lods = [5,20,50,80]
+@export var chunk_lods : Array[int] = [2,4,8,15,20,50]
+@export var LOD_distances : Array[int] = [2000,1500,1050,900,790,550]
 #2D position in world space
 var position_coord = Vector2()
+var grid_coord = Vector2()
+
+var vertices = PackedVector3Array()
+var UVs = PackedVector2Array()
 const CENTER_OFFSET = 0.5
-var min_height = 0
-var max_height = 1
+
 var set_collision = false
-func generate_terrain(thread,noise:FastNoiseLite,coords:Vector2,size:float,initailly_visible:bool):
+
+func generate_terrain(noise:FastNoiseLite,coords:Vector2,size:float,initailly_visible:bool):
 	Terrain_Size = size
 	#set 2D position in world space
+	grid_coord = coords
 	position_coord = coords * size
 	var a_mesh :ArrayMesh
 	var surftool = SurfaceTool.new()
 	surftool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var verty = 0.0
 	#use resolution to loop
 	for z in resolution+1:
 		for x in resolution+1:
@@ -61,65 +66,49 @@ func generate_terrain(thread,noise:FastNoiseLite,coords:Vector2,size:float,inita
 	a_mesh = surftool.commit()
 	#assign Array Mesh to mesh
 	mesh = a_mesh
-	if set_collision == true:
+	if set_collision:
 		create_collision()
-	#update_shader()
 	#set to invisible on start
 	setChunkVisible(initailly_visible)
-	#call thread finished when safe
-	call_deferred("thread_finished",thread)
-	
-
-func update_shader():
-	var mat = get_active_material(0)
-	mat.set_shader_parameter("min_height",min_height)
-	mat.set_shader_parameter("max_height",max_height)
-	
-	
-func draw_sphere(pos:Vector3):
-	var ins = MeshInstance3D.new()
-	add_child(ins)
-	ins.position = pos
-	var sphere = SphereMesh.new()
-	sphere.radius = 0.1
-	sphere.height = 0.2
-	ins.mesh = sphere
 
 #create collision
 func create_collision():
 	if get_child_count() > 0:
-		for i in get_children():
-			i.free()
+		get_child(0).queue_free()
 	create_trimesh_collision()
 	
-
-
-#joins and frees thread when not in use
-func thread_finished(thread:Thread):
-	if thread != null:
-		thread.wait_to_finish()
-
 #update chunk to check if near viewer
 func update_chunk(view_pos:Vector2,max_view_dis):
 	var viewer_distance = position_coord.distance_to(view_pos)
 	var _is_visible = viewer_distance <= max_view_dis
+	#setChunkVisible(_is_visible)
+
+#SLOW
+func should_remove(view_pos:Vector2,max_view_dis):
+	var remove = false
+	var viewer_distance = position_coord.distance_to(view_pos)
+	if viewer_distance > max_view_dis:
+		remove = true
+	return remove
 	
-	setChunkVisible(_is_visible)
 #update mesh based on distance
 func update_lod(view_pos:Vector2):
 	var viewer_distance = position_coord.distance_to(view_pos)
 	var update_terrain = false
-	var new_lod = 0
-	if viewer_distance > 1000:
-		new_lod = chunk_lods[0]
-	if viewer_distance <= 1000:
-		new_lod = chunk_lods[1]
-	if viewer_distance < 900:
-		new_lod = chunk_lods[2]
-	if viewer_distance < 500:
-		new_lod = chunk_lods[3]
-		#if terrain is at highest detail create collision shape
+	var new_lod = chunk_lods[0]
+	if chunk_lods.size() != LOD_distances.size():
+		print("ERROR Lods and Distance count mismatch")
+		return
+	for i in range(chunk_lods.size()):
+		var lod = chunk_lods[i]
+		var dis = LOD_distances[i]
+		if viewer_distance < dis:
+			new_lod = lod
+	#if terrain is at highest detail create collision shape
+	if new_lod >= chunk_lods[chunk_lods.size()-2]:
 		set_collision = true
+	else:
+		set_collision = false
 	# if resolution is not equal to new resolution
 	#set update terrain to true
 	if resolution != new_lod:

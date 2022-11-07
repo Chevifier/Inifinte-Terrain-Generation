@@ -1,19 +1,18 @@
 @tool
 extends MeshInstance3D
 
-@export_range(20,400, 1)var Terrain_Size := 20
-@export_range(2, 100, 1) var resolution := 2
+@export_range(20,400, 1) var Terrain_Size := 100
+@export_range(1, 100, 1) var resolution := 30
 #center terrain
 const center_offset := 0.5
 @export var Terrain_Max_Height = 5
 @export var noise_offset = 0.5
-@export var update = false
-@export var clear_vert_vis = false
+@export var create_collision = false
+@export var remove_collision = false
 
 var min_height = 0
 var max_height = 1
-var collision_map = PackedFloat32Array()
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	generate_terrain()
 	
@@ -24,10 +23,10 @@ func generate_terrain():
 	n.noise_type = FastNoiseLite.TYPE_PERLIN
 	n.frequency = 0.1
 	surftool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var verty = 0.0
+	
 	for z in resolution+1:
 		for x in resolution+1:
-			var percent = Vector2(x,z)/(resolution)
+			var percent = Vector2(x,z)/resolution
 			var pointOnMesh = Vector3((percent.x-center_offset),0,(percent.y-center_offset))
 			var vertex = pointOnMesh * Terrain_Size;
 			vertex.y = n.get_noise_2d(vertex.x*noise_offset,vertex.z*noise_offset) * Terrain_Max_Height
@@ -51,7 +50,6 @@ func generate_terrain():
 	a_mesh = surftool.commit()
 
 	mesh = a_mesh
-	create_collision()
 	update_shader()
 	
 
@@ -61,35 +59,33 @@ func update_shader():
 	mat.set_shader_parameter("min_height",min_height)
 	mat.set_shader_parameter("max_height",max_height)
 	
-	
-func draw_sphere(pos:Vector3):
-	var ins = MeshInstance3D.new()
-	add_child(ins)
-	ins.position = pos
-	var sphere = SphereMesh.new()
-	sphere.radius = 0.1
-	sphere.height = 0.2
-	ins.mesh = sphere
-
-
+var last_res = 0
+var last_size = 0
+var last_height = 0
+var last_offset = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if update:
+	if resolution!=last_res or Terrain_Size!=last_size or \
+		Terrain_Max_Height!=last_height or noise_offset!=last_offset:
 		generate_terrain()
-		update = false
-		
-	if clear_vert_vis:
-		for i in get_children():
-			i.free()
-		clear_vert_vis = false
+		last_res = resolution
+		last_size = Terrain_Size
+		last_height = Terrain_Max_Height
+		last_offset = noise_offset
+	
+	if remove_collision:
+		clear_collision()
+		remove_collision = false
+	if create_collision:
+		create_trimesh_collision()
+		create_collision = false
 
-
-func create_collision():
-	if get_child_count() > 0:
-		for i in get_children():
-			i.free()
+func generate_collision():
+	clear_collision()
 	create_trimesh_collision()
 	
 
-
-
+func clear_collision():
+	if get_child_count() > 0:
+		for i in get_children():
+			i.free()

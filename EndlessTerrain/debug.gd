@@ -16,6 +16,8 @@ func _process(delta):
 		"Draw_Calls: " + str(Draw_Calls) + "\n" + \
 		"Frame_Time: " + str(Frame_Time) + "\n" + \
 		"VRAM: " + str(VRAM) + "\n" + \
-		"OBJECTS: " + str(OBJECTS)
+		"OBJECTS RENDERING: " + str(OBJECTS) +"\n" + \
+		"Chunks: " + str(get_parent().get_child(0).get_child_count()) +"\n" + \
+		"POS:" +  str(get_parent().get_node("Player").global_position)
 	
 	text = read_out
