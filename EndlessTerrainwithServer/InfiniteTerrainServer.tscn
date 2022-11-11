@@ -1,35 +1,51 @@
-[gd_scene load_steps=8 format=3 uid="uid://rxki7fo4b00c"]
+[gd_scene load_steps=8 format=3 uid="uid://deedmopkw842h"]
 
-[ext_resource type="Script" path="res://EndlessTerrainThreaded/EndlessTerrainThreaded.gd" id="1_a5omx"]
-[ext_resource type="PackedScene" uid="uid://b2x34ysakaigh" path="res://EndlessTerrainThreaded/TerrainChunkMT.tscn" id="2_rwqoh"]
-[ext_resource type="Sky" uid="uid://dgwxj6r8ymssf" path="res://Sky.tres" id="4_fgrfl"]
-[ext_resource type="Script" path="res://Debug/debug.gd" id="4_vvtep"]
-[ext_resource type="PackedScene" uid="uid://4eyad0j15nfi" path="res://Player/Player.tscn" id="5_4ox3w"]
+[ext_resource type="Script" path="res://EndlessTerrainwithServer/InfiniteTerrainServer.gd" id="1_4q4eh"]
+[ext_resource type="Material" uid="uid://dx3emm3deefrf" path="res://Terrain_Mat.tres" id="2_rul30"]
+[ext_resource type="Sky" uid="uid://dgwxj6r8ymssf" path="res://Sky.tres" id="3_ew1c1"]
+[ext_resource type="PackedScene" uid="uid://4eyad0j15nfi" path="res://Player/Player.tscn" id="4_eig25"]
+[ext_resource type="Script" path="res://Debug/debug.gd" id="4_hi3ip"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_w4m3e"]
-noise_type = 3
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_itf6b"]
+frequency = 0.001
 
-[sub_resource type="Environment" id="Environment_rmk44"]
+[sub_resource type="Environment" id="Environment_i2a7v"]
 background_mode = 2
-sky = ExtResource("4_fgrfl")
+sky = ExtResource("3_ew1c1")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="World" type="Node3D"]
-
-[node name="InfiniteTerrainThreaded" type="Node3D" parent="." node_paths=PackedStringArray("viewer")]
-script = ExtResource("1_a5omx")
-viewer = NodePath("../Player")
-chunk_mesh_scene = ExtResource("2_rwqoh")
-thread_count = 15
-noise = SubResource("FastNoiseLite_w4m3e")
+[node name="InfiniteTerrainServer" type="Node3D" node_paths=PackedStringArray("viewer")]
+script = ExtResource("1_4q4eh")
+chunkSize = 200
+terrain_height = 302
+view_distance = 2000
+viewer = NodePath("Player")
+material = ExtResource("2_rul30")
+noise = SubResource("FastNoiseLite_itf6b")
+LOD0 = 80.0
+LOD0_Distance = 300.0
+LOD1 = 60.0
+LOD1_Distance = 500.0
+LOD2 = 20.0
+LOD2_Distance = 700.0
+LOD3 = 10.0
+LOD3_Distance = 900.0
+LOD4 = 6.0
+LOD4_Distance = 1000.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_rmk44")
+environment = SubResource("Environment_i2a7v")
+
+[node name="Player" parent="." instance=ExtResource("4_eig25")]
+floor_snap_length = 0.19
+JUMP_VELOCITY = 7.0
+SPEED = 10
+gravity_enabled = true
 
 [node name="debug" type="Label" parent="." node_paths=PackedStringArray("NodeToDebug", "player")]
 offset_left = 32.0
@@ -40,8 +56,8 @@ text = "FPS: 0
 Draw Calls:0
 Frame Time:0
 Objects:0"
-script = ExtResource("4_vvtep")
-NodeToDebug = NodePath("../InfiniteTerrainThreaded")
+script = ExtResource("4_hi3ip")
+NodeToDebug = NodePath("..")
 player = NodePath("../Player")
 
 [node name="Panel" type="ColorRect" parent="debug"]
@@ -91,8 +107,6 @@ offset_bottom = 328.0
 text = "Move Speed
 "
 
-[node name="Player" parent="." instance=ExtResource("5_4ox3w")]
-
 [connection signal="toggled" from="debug/view_debug" to="debug" method="_on_check_box_toggled"]
 [connection signal="toggled" from="debug/show_wireframe" to="debug" method="_on_show_wireframe_toggled"]
-[connection signal="value_changed" from="debug/Player_speed" to="debug" method="_on_player_speed_value_changed"]
+[connection signal="value_changed" from="debug/Player_speed" to="Player" method="_on_player_speed_value_changed"]

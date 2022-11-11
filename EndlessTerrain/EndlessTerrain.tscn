@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpu7c3kans0wk"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://EndlessTerrain/EndlessTerrain.gd" id="1_r563f"]
 [ext_resource type="PackedScene" uid="uid://xxbd64a50fk1" path="res://EndlessTerrain/TerrainChunk.tscn" id="2_q4j3x"]
 [ext_resource type="Sky" uid="uid://dgwxj6r8ymssf" path="res://Sky.tres" id="4_fgrfl"]
-[ext_resource type="Script" path="res://EndlessTerrain/debug.gd" id="4_vvtep"]
-[ext_resource type="PackedScene" uid="uid://sg6unraa28jg" path="res://EndlessTerrain/Player.tscn" id="5_4ox3w"]
+[ext_resource type="PackedScene" uid="uid://cg7hfmg0b6g8a" path="res://Debug/debug.tscn" id="4_j26vx"]
+[ext_resource type="PackedScene" uid="uid://sg6unraa28jg" path="res://Player/Player.tscn" id="5_4ox3w"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_fvdy5"]
 noise_type = 3
@@ -39,16 +39,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_rmk44")
 
-[node name="debug" type="Label" parent="."]
-offset_left = 32.0
-offset_top = 32.0
-offset_right = 366.0
-offset_bottom = 462.0
-text = "FPS: 0
-Draw Calls:0
-Frame Time:0
-Objects:0"
-script = ExtResource("4_vvtep")
+[node name="debug" parent="." instance=ExtResource("4_j26vx")]
 
 [node name="Player" parent="." instance=ExtResource("5_4ox3w")]
 floor_snap_length = 0.45

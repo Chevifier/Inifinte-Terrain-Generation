@@ -13,8 +13,6 @@ extends MeshInstance3D
 var position_coord = Vector2()
 var grid_coord = Vector2()
 
-var vertices = PackedVector3Array()
-var UVs = PackedVector2Array()
 const CENTER_OFFSET = 0.5
 
 var set_collision = false
@@ -105,7 +103,7 @@ func update_lod(view_pos:Vector2):
 		if viewer_distance < dis:
 			new_lod = lod
 	#if terrain is at highest detail create collision shape
-	if new_lod >= chunk_lods[chunk_lods.size()-2]:
+	if new_lod >= chunk_lods[chunk_lods.size()-1]:
 		set_collision = true
 	else:
 		set_collision = false

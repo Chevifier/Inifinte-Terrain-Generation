@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://EndlessTerrainwithServer/ServerTerrain.gd" id="1_1xsjy"]
+[ext_resource type="Material" uid="uid://dx3emm3deefrf" path="res://Terrain_Mat.tres" id="2_sawtb"]
+[ext_resource type="PackedScene" uid="uid://sg6unraa28jg" path="res://Player/Player.tscn" id="3_isdyi"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dqh0t"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o03u2"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ivl2c"]
+sky_material = SubResource("ProceduralSkyMaterial_o03u2")
+
+[sub_resource type="Environment" id="Environment_bqvkp"]
+background_mode = 2
+sky = SubResource("Sky_ivl2c")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="ServerTerrain" type="Node3D"]
+script = ExtResource("1_1xsjy")
+Terrain_Max_Height = 48
+material = ExtResource("2_sawtb")
+noise = SubResource("FastNoiseLite_dqh0t")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bqvkp")
+
+[node name="Player" parent="." instance=ExtResource("3_isdyi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 196.416, 0)
+gravity_enabled = true

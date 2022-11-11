@@ -12,7 +12,7 @@ extends MeshInstance3D
 #2D position in world space
 var position_coord = Vector2()
 var grid_coord = Vector2()
-
+var mutex = Mutex.new()
 var vertices = PackedVector3Array()
 var UVs = PackedVector2Array()
 const CENTER_OFFSET = 0.5
@@ -23,7 +23,7 @@ var request_generation = false
 var generating = false
 var completed = false
 
-func generate_terrain(thread,noise:FastNoiseLite,coords:Vector2,size:float,initailly_visible:bool):
+func generate_terrain(noise:FastNoiseLite,coords:Vector2,size:float,initailly_visible:bool,thread=null):
 	Terrain_Size = size
 	#set 2D position in world space
 	grid_coord = coords
@@ -74,17 +74,18 @@ func generate_terrain(thread,noise:FastNoiseLite,coords:Vector2,size:float,inita
 	setChunkVisible(initailly_visible)
 	
 	call_deferred("thread_complete",thread)
-	if set_collision:
-		create_collision()
-
-#joins and frees thread when not in use
-func thread_finished(thread:Thread):
+	
+func thread_complete(thread):
 	if thread != null:
 		thread.wait_to_finish()
 		
+	if set_collision:
+		generate_collision()
+	
+
 		
 #create collision
-func create_collision():
+func generate_collision():
 	if get_child_count() > 0:
 		get_child(0).queue_free()
 	create_trimesh_collision()

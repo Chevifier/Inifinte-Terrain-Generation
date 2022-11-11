@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://sg6unraa28jg"]
+[gd_scene load_steps=4 format=3 uid="uid://4eyad0j15nfi"]
 
-[ext_resource type="Script" path="res://EndlessTerrain/Viewer.gd" id="1_oconi"]
-[ext_resource type="PackedScene" path="res://EndlessTerrain/ball.tscn" id="2_0qvhi"]
+[ext_resource type="Script" path="res://Player/Player.gd" id="1_ai2qh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_btq0u"]
 
@@ -13,9 +12,8 @@ collision_layer = 3
 wall_min_slide_angle = 1.53065
 floor_stop_on_slope = false
 floor_constant_speed = true
-script = ExtResource("1_oconi")
-ball_scene = ExtResource("2_0qvhi")
-speed = 8
+script = ExtResource("1_ai2qh")
+JUMP_VELOCITY = 4.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_btq0u")
@@ -24,11 +22,15 @@ shape = SubResource("CapsuleShape3D_btq0u")
 mesh = SubResource("CapsuleMesh_cghjb")
 
 [node name="Cam" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.678916, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00164986, 0)
 
-[node name="V" type="Node3D" parent="Cam"]
+[node name="V" type="SpringArm3D" parent="Cam"]
+spring_length = 5.0
 
-[node name="Camera3D" type="Camera3D" parent="Cam/V"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
+[node name="Cam1" type="Camera3D" parent="Cam/V"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.34712)
 current = true
 fov = 46.3
+
+[node name="Cam2" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)

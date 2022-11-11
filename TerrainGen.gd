@@ -9,7 +9,7 @@ const center_offset := 0.5
 @export var noise_offset = 0.5
 @export var create_collision = false
 @export var remove_collision = false
-
+@export var noise:FastNoiseLite = FastNoiseLite.new()
 var min_height = 0
 var max_height = 1
 
@@ -19,9 +19,8 @@ func _ready():
 func generate_terrain():
 	var a_mesh = ArrayMesh.new()
 	var surftool = SurfaceTool.new()
-	var n = FastNoiseLite.new()
-	n.noise_type = FastNoiseLite.TYPE_PERLIN
-	n.frequency = 0.1
+	
+	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	surftool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	for z in resolution+1:
@@ -29,7 +28,7 @@ func generate_terrain():
 			var percent = Vector2(x,z)/resolution
 			var pointOnMesh = Vector3((percent.x-center_offset),0,(percent.y-center_offset))
 			var vertex = pointOnMesh * Terrain_Size;
-			vertex.y = n.get_noise_2d(vertex.x*noise_offset,vertex.z*noise_offset) * Terrain_Max_Height
+			vertex.y = noise.get_noise_2d(vertex.x*noise_offset,vertex.z*noise_offset) * Terrain_Max_Height
 			var uv = Vector2()
 			uv.x = percent.x
 			uv.y = percent.y
