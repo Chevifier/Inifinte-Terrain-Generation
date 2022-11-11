@@ -127,8 +127,6 @@ func generate_collision():
 	mesh = ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,mesh_data)
 	collision_shape = mesh.create_trimesh_shape()
-	var mesh_shape = ps.concave_polygon_shape_create()
-	ps.shape_set_data(mesh_shape,mesh_data[Mesh.ARRAY_VERTEX])
 	ps.body_add_shape(collision_body,collision_shape,Transform3D.IDENTITY)
 	
 

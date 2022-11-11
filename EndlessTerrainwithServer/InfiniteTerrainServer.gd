@@ -39,7 +39,10 @@ func _ready():
 	chunksvisible = roundi(view_distance/chunkSize)
 	RenderingServer.set_debug_generate_wireframes(true)
 	set_wireframe(render_wireframe) 
-	updateVisibleChunk()
+	#First call to create the chunks
+	updateVisibleChunk(true)
+	#second call to update LODs
+	updateVisibleChunk(true)
 	
 	
 func set_wireframe(draw_wireframe:bool):
@@ -53,9 +56,9 @@ func _process(delta):
 	set_wireframe(render_wireframe)
 	viewer_position.x = viewer.global_position.x
 	viewer_position.y = viewer.global_position.z
-	updateVisibleChunk()
+	updateVisibleChunk(false)
 
-func updateVisibleChunk():
+func updateVisibleChunk(initail_chunks):
 	#hide chunks that were are out of view
 	for chunk in last_visible_chunks:
 		chunk.setChunkVisible(false)
@@ -75,11 +78,11 @@ func updateVisibleChunk():
 				#update chunk LODs
 				if terrain_chunks[view_chunk_coord].update_lod(viewer_position):
 					terrain_chunks[view_chunk_coord].set_generation_data(noise,view_chunk_coord,chunkSize,true)
-					if use_threads == false:
+					if use_threads == false or initail_chunks:
 						terrain_chunks[view_chunk_coord].generate_terrain()
 					else:
 						for thread in threads:
-							if thread.is_alive() == false:
+							if thread.is_started() == false:
 								thread.start(terrain_chunks[view_chunk_coord].generate_terrain.bind(thread))
 								break
 							
@@ -101,7 +104,7 @@ func updateVisibleChunk():
 
 				
 				chunk.setLODData(lods,lods_dis)
-				if use_threads == false:
+				if use_threads == false or initail_chunks:
 					chunk.generate_terrain()
 				else:
 					for thread in threads:

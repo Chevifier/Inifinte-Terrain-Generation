@@ -73,3 +73,7 @@ func updateVisibleChunk():
 				terrain_chunks.erase(chunk.grid_coord)
 			
 		
+func get_active_threads():
+	#This version isnt using
+	#threading so return 0
+	return 0
