@@ -9,7 +9,6 @@ extends Node3D
 @export var view_distance = 2000
 @export var viewer :CharacterBody3D
 @export var chunk_mesh_scene : PackedScene
-@onready var container = $ChunkContainer
 var viewer_position = Vector2()
 var terrain_chunks = {}
 var chunksvisible=0
@@ -64,7 +63,7 @@ func updateVisibleChunk():
 				#if chunk exist update the chunk passing viewer_position and view_distance
 				terrain_chunks[view_chunk_coord].update_chunk(viewer_position,view_distance)
 				if terrain_chunks[view_chunk_coord].update_lod(viewer_position):
-					terrain_chunks[view_chunk_coord].generate_terrain(null,noise,view_chunk_coord,chunkSize,false)
+					terrain_chunks[view_chunk_coord].generate_terrain(noise,view_chunk_coord,chunkSize,false)
 				#if chunk is visible add it to last visible chunks
 				if terrain_chunks[view_chunk_coord].getChunkVisible():
 					last_visible_chunks.append(terrain_chunks[view_chunk_coord])

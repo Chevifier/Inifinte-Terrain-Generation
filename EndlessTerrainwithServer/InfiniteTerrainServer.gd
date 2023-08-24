@@ -1,5 +1,4 @@
 extends Node3D
-
 @export var chunkSize = 100
 @export var terrain_height = 20
 @export var view_distance = 500
@@ -26,6 +25,7 @@ var terrain_chunks = {}
 var generation_queue = []
 var chunksvisible=0
 var last_visible_chunks = []
+#EXPIRAMENTAL
 @export var use_threads = false
 @export var thread_count = 10
 #array of threads to generate terrain

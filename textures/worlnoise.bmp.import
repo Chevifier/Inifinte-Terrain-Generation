@@ -16,9 +16,9 @@ dest_files=["res://.godot/imported/worlnoise.bmp-e7161b4f903ef42a8dd556d3244fca6
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1

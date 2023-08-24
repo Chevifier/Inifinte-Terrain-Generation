@@ -3,8 +3,8 @@ class_name ServerTerrainChunk
 @export_range(1, 100, 1) var resolution := 4
 #set the minimum to maximum lods 
 #to change the terrain resolution
-@export var chunk_lods : Array[int] = [5,20,40,45,50]
-@export var LOD_distances : Array[int] = [400,350,250,200,150]
+@export var chunk_lods : Array = [5,20,40,45,50]
+@export var LOD_distances : Array = [400,350,250,200,150]
 #2D position in world space
 var position_coord = Vector2()
 var grid_coord = Vector2()

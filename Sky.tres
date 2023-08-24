@@ -1,33 +1,22 @@
-[gd_resource type="Sky" load_steps=7 format=3 uid="uid://dgwxj6r8ymssf"]
+[gd_resource type="Sky" load_steps=3 format=3 uid="uid://dgwxj6r8ymssf"]
 
 [ext_resource type="Shader" path="res://sky_shader.gdshader" id="1_o6hgb"]
-[ext_resource type="CompressedTexture3D" uid="uid://bo3e8wav2xdpd" path="res://textures/perlworlnoise.tga" id="2_6qs4u"]
-[ext_resource type="CompressedTexture3D" uid="uid://bj00nf03tuis2" path="res://textures/worlnoise.bmp" id="4_21w33"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3u58x"]
-noise_type = 4
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_flrqe"]
-noise = SubResource("FastNoiseLite_3u58x")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wpmqb"]
 shader = ExtResource("1_o6hgb")
-shader_parameter/_density = 0.028
+shader_parameter/_density = 0.05
+shader_parameter/cloud_coverage = 0.25
+shader_parameter/_time_scale = 1.0
 shader_parameter/_time_offset = 0.0
-shader_parameter/_time_scale = 2.0
-shader_parameter/cloud_coverage = 0.354
-shader_parameter/exposure = 0.1
-shader_parameter/ground_color = Color(1, 1, 1, 1)
-shader_parameter/mie = 0.005
-shader_parameter/mie_color = Color(0.63, 0.77, 0.92, 1)
-shader_parameter/mie_eccentricity = -1.0
-shader_parameter/perlworlnoise = ExtResource("2_6qs4u")
-shader_parameter/rayleigh = 7.026
+shader_parameter/rayleigh = 2.0
 shader_parameter/rayleigh_color = Color(0.26, 0.41, 0.58, 1)
-shader_parameter/sun_disk_scale = 1.0
+shader_parameter/mie = 0.005
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/mie_color = Color(0.63, 0.77, 0.92, 1)
 shader_parameter/turbidity = 10.0
-shader_parameter/weathermap = SubResource("NoiseTexture2D_flrqe")
-shader_parameter/worlnoise = ExtResource("4_21w33")
+shader_parameter/sun_disk_scale = 1.0
+shader_parameter/ground_color = Color(1, 1, 1, 1)
+shader_parameter/exposure = 0.1
 
 [resource]
 sky_material = SubResource("ShaderMaterial_wpmqb")

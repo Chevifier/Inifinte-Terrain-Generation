@@ -39,7 +39,8 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_rmk44")
 
-[node name="debug" parent="." instance=ExtResource("4_j26vx")]
+[node name="debug" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_j26vx")]
+player = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("5_4ox3w")]
 floor_snap_length = 0.45

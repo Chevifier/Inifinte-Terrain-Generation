@@ -6,5 +6,4 @@
 [node name="TerrainChunk" type="MeshInstance3D"]
 material_override = ExtResource("1_pg4ei")
 script = ExtResource("1_reb1s")
-Terrain_Size = 200.0
 resolution = 5.0

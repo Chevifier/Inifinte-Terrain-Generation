@@ -5,7 +5,7 @@ extends Node3D
 @export var view_distance = 500
 @export var viewer :CharacterBody3D
 @export var chunk_mesh_scene : PackedScene
-@onready var container = $ChunkContainer
+@export var render_debug := false
 var viewer_position = Vector2()
 var terrain_chunks = {}
 var chunksvisible=0
@@ -16,7 +16,8 @@ var last_visible_chunks = []
 func _ready():
 	#set the total chunks to be visible
 	chunksvisible = roundi(view_distance/chunkSize)
-	#set_wireframe()
+	if render_debug:
+		set_wireframe()
 	updateVisibleChunk()
 	
 	
