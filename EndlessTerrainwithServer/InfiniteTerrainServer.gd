@@ -99,8 +99,8 @@ func updateVisibleChunk(initail_chunks):
 				terrain_chunks[view_chunk_coord] = chunk
 				chunk.Terrain_Max_Height = terrain_height
 				chunk.set_generation_data(noise,view_chunk_coord,chunkSize,false)
-				var lods = [LOD4,LOD3,LOD2,LOD1,LOD0]
-				var lods_dis = [LOD4_Distance,LOD3_Distance,LOD2_Distance,LOD1_Distance,LOD0_Distance]
+				var lods: Array[int] = [LOD4,LOD3,LOD2,LOD1,LOD0]
+				var lods_dis: Array[int] = [LOD4_Distance,LOD3_Distance,LOD2_Distance,LOD1_Distance,LOD0_Distance]
 
 				
 				chunk.setLODData(lods,lods_dis)
